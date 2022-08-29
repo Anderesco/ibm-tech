@@ -1,4 +1,6 @@
+com\ibm\tech\service\TechServiceImpl.class
 com\ibm\tech\TechApplication.class
+com\ibm\tech\service\TechService.class
 com\ibm\tech\exceptions\UserNotFoundException.class
 com\ibm\tech\mapper\PersonMapper.class
 com\ibm\tech\bean\PersonBean.class

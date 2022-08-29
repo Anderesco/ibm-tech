@@ -1,19 +1,16 @@
 package com.ibm.tech.controller;
 
+import com.ibm.tech.bean.PersonBean;
 import com.ibm.tech.bean.PersonResponse;
-import com.ibm.tech.dao.PersonDao;
 import com.ibm.tech.entity.PersonEntity;
+import com.ibm.tech.service.TechService;
 import com.ibm.tech.util.Utils;
 import java.util.List;
-import java.util.Objects;
-import com.ibm.tech.exceptions.UserNotFoundException;
-import com.ibm.tech.mapper.PersonMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *<b>Class</b>: PersonEntity.<br/>
@@ -28,29 +25,35 @@ import org.springframework.web.bind.annotation.RestController;
  *</ul>
  * @version 1.0
  */
-
 @RestController
 @AllArgsConstructor
 @Slf4j
+@RequestMapping("/person")
 public class TechController {
 
-  private PersonDao personDao;
+  private TechService techService;
 
-  private PersonMapper personMapper;
-
-  @GetMapping("/person")
+  @GetMapping("")
   public ResponseEntity<List<PersonEntity>> getPerson() {
 
     log.info("Get Persons");
 
-    return ResponseEntity.ok(personDao.getPersons());
+    return ResponseEntity.ok(techService.getPersons());
   }
 
-  @GetMapping("/person/search")
+  @GetMapping("/search")
   public ResponseEntity<PersonResponse> getPersonByParameter(@RequestParam String codigoUnico) {
     log.info("Get person: {}", Utils.getDecode(codigoUnico));
-    return ResponseEntity.ok(personMapper.getPersonResponseMapper(Objects.requireNonNull(personDao
-            .findById(Integer.parseInt(Utils.getDecode(codigoUnico)))
-            .orElseThrow(UserNotFoundException::new))));
+    return ResponseEntity.ok(techService.getPerson(codigoUnico));
+  }
+
+  @PostMapping("/update")
+  public ResponseEntity<Void> updatePerson(@RequestBody PersonBean personBean) throws Exception {
+    log.info("Update Person...");
+
+    if(techService.updatePerson(personBean) == null)
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 }
