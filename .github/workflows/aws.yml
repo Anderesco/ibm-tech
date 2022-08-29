@@ -36,7 +36,7 @@ env:
   ECR_REPOSITORY: ibm.tech.ecr           # set this to your Amazon ECR repository name
   ECS_SERVICE: ibm-tech-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: IBM-TECH-CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ibm-tech-task # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: task-definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: ibm-tech-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
